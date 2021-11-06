@@ -25,7 +25,7 @@ export default () => {
   }
 
   React.useEffect(()=>{
-    searchApi('pasta')
+    searchApi('burger')
   },[])
 
   return [searchApi, results, errorMessage, isLoading];
