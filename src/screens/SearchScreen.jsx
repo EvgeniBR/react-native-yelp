@@ -10,13 +10,13 @@ const SearchScreen = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
 
-  const searchApi = async () => {
+  const searchApi = async (searchTerm) => {
     try{
     setIsLoading(true)
     const response = await yelp.get('/search',{
       params: {
         limit: 50,
-        term,
+        term: searchTerm,
         location: 'san jose'
       }
     });
@@ -27,10 +27,14 @@ const SearchScreen = () => {
   }
   }
 
+  React.useEffect(()=>{
+    searchApi('pasta')
+  },[])
+
   return (
     <View>
       <SearchBar
-        onTermSubmit={() => searchApi()}
+        onTermSubmit={() => searchApi(term)}
         term={term}
         onTermChange={(newTerm) => setTerm(newTerm)}
       />
