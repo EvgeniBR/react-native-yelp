@@ -1,35 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import ResultList from '../components/ResultList';
 import SearchBar from '../components/SearchBar';
-import yelp from '../api/yelp';
+import useResults from '../hooks/useResults';
 
 const SearchScreen = () => {
   const [term, setTerm] = React.useState('');
-  const [results, setResults] = React.useState([]);
-  const [errorMessage, setErrorMessage] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false);
-
-
-  const searchApi = async (searchTerm) => {
-    try{
-    setIsLoading(true)
-    const response = await yelp.get('/search',{
-      params: {
-        limit: 50,
-        term: searchTerm,
-        location: 'san jose'
-      }
-    });
-    setResults(response.data.businesses);
-    setIsLoading(false)
-  }catch(err){
-    setErrorMessage('somthing went wrong!')
-  }
-  }
-
-  React.useEffect(()=>{
-    searchApi('pasta')
-  },[])
+  const [searchApi, results, errorMessage, isLoading] = useResults()
 
   return (
     <View>
@@ -41,6 +18,9 @@ const SearchScreen = () => {
       {isLoading?<Text>Loading ... </Text>:null}
       {errorMessage?<Text>{errorMessage}</Text>:null}
       <Text>We have found {results.length} results</Text>
+      <ResultList title="Cost Effective" />
+      <ResultList title="Bit Pricier" />
+      <ResultList title="Big Spender" />
     </View>
   );
 };
